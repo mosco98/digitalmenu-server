@@ -1,22 +1,21 @@
 const { DataTypes } = require("sequelize")
 const db = require("../utils/db")
 
-const User = db.define("user", {
+const Table = db.define("table", {
   id: {
     allowNull: false,
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
+    type: DataTypes.STRING,
     primaryKey: true
+  },
+  userId: {
+    type: DataTypes.STRING,
+    allowNull: false
   },
   name: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  password: {
+  qrcode: {
     type: DataTypes.STRING,
     allowNull: false
   },
@@ -30,4 +29,4 @@ const User = db.define("user", {
   }
 })
 
-module.exports = User
+module.exports = Table

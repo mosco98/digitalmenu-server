@@ -5,10 +5,10 @@ const { generateAccessToken, generateRefreshToken } = require("../utils/token")
 
 exports.signUp = async (req, res) => {
   // Get request body
-  const { fullName, email, password } = req.body
+  const { name, email, password } = req.body
 
   // Validate request body
-  if (validator.isEmpty(fullName)) {
+  if (validator.isEmpty(name)) {
     return res
       .status(400)
       .json({ error: true, message: "Name cannot be empty" })
@@ -56,7 +56,7 @@ exports.signUp = async (req, res) => {
       // Create new User
       try {
         const user = await User.create({
-          fullName,
+          name,
           email,
           password: hash,
           createdAt: new Date(),
@@ -66,7 +66,7 @@ exports.signUp = async (req, res) => {
         const userInfo = {
           id: user.id,
           email: user.email,
-          fullName: user.fullName
+          name: user.name
         }
         const accessToken = generateAccessToken(userInfo)
         const refreshToken = generateRefreshToken(userInfo)
@@ -124,7 +124,7 @@ exports.signIn = async (req, res) => {
     const userInfo = {
       id: user.id,
       email: user.email,
-      fullName: user.fullName
+      name: user.name
     }
     const accessToken = generateAccessToken(userInfo)
     const refreshToken = generateRefreshToken(userInfo)
@@ -154,12 +154,8 @@ exports.getUser = async (req, res) => {
       user: {
         id: user.id,
         email: user.email,
-        fullName: user.fullName
+        name: user.name
       }
     })
   }
-}
-
-exports.getNote = async (_req, res) => {
-  res.status(200).json({ success: true, message: "Helllooooo, this is it!" })
 }

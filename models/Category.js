@@ -1,22 +1,18 @@
 const { DataTypes } = require("sequelize")
 const db = require("../utils/db")
 
-const User = db.define("user", {
+const Category = db.define("category", {
   id: {
     allowNull: false,
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true
   },
+  userId: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
   name: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  password: {
     type: DataTypes.STRING,
     allowNull: false
   },
@@ -30,4 +26,4 @@ const User = db.define("user", {
   }
 })
 
-module.exports = User
+module.exports = Category

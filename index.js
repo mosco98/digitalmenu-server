@@ -8,6 +8,9 @@ const cookieParser = require("cookie-parser")
 const db = require("./utils/db")
 const userRoutes = require("./routes/user")
 const authRoutes = require("./routes/auth")
+const tableRoutes = require("./routes/table")
+const categoryRoutes = require("./routes/category")
+const itemRoutes = require("./routes/item")
 
 // Test db connection
 db.authenticate()
@@ -24,6 +27,9 @@ app.use(cookieParser())
 // API Routes
 app.use("/user", userRoutes)
 app.use("/auth", authRoutes)
+app.use("/table", tableRoutes)
+app.use("/category", categoryRoutes)
+app.use("/item", itemRoutes)
 
 // console.log(require("crypto").randomBytes(64).toString("hex"))
 
