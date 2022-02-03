@@ -32,16 +32,57 @@ exports.createCategory = async (req, res) => {
   }
 
   try {
-    await Category.create({
+    const newCategory = await Category.create({
       name,
       userId,
       createdAt: new Date(),
       updatedAt: new Date()
     })
 
+    if (newCategory) {
+      return res
+        .status(200)
+        .json({
+          success: true,
+          categoryId: newCategory.id,
+          message: "Category created successfully"
+        })
+    }
+  } catch (error) {
+    return res.status(401).json({ error: true, message: "An error occurred" })
+  }
+}
+
+exports.getCategory = async (req, res) => {
+  const userId = req.headers["userid"]
+  const { id } = req.body
+
+  if (!userId) {
+    return res.status(401).json({ error: true, message: "Invalid user" })
+  }
+
+  if (!id) {
     return res
-      .status(200)
-      .json({ success: true, message: "Category created successfully" })
+      .status(401)
+      .json({ error: true, message: "Category Id is required" })
+  }
+
+  try {
+    const category = await Category.findOne({
+      where: { userId, id }
+    })
+
+    if (!category) {
+      return res
+        .status(401)
+        .json({ error: true, message: "Category does not exist" })
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: category,
+      message: "Category info fetched successfully"
+    })
   } catch (error) {
     return res.status(401).json({ error: true, message: "An error occurred" })
   }
@@ -65,6 +106,34 @@ exports.getAllCategories = async (req, res) => {
       success: true,
       message: "Categories fetch successful",
       data: [...categories]
+    })
+  } catch (error) {
+    return res.status(401).json({ error: true, message: "An error occurred" })
+  }
+}
+
+exports.deleteCategory = async (req, res) => {
+  const userId = req.headers["userid"]
+  const { id } = req.body
+
+  if (!userId) {
+    return res.status(401).json({ error: true, message: "Invalid user" })
+  }
+
+  if (!id) {
+    return res
+      .status(401)
+      .json({ error: true, message: "Category Id is required" })
+  }
+
+  try {
+    await Category.destroy({
+      where: { userId, id }
+    })
+
+    return res.status(200).json({
+      success: true,
+      message: "Category deleted successfully"
     })
   } catch (error) {
     return res.status(401).json({ error: true, message: "An error occurred" })

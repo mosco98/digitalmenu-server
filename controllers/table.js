@@ -52,9 +52,12 @@ exports.createTable = async (req, res) => {
       updatedAt: new Date()
     })
 
-    return res
-      .status(200)
-      .json({ success: true, tableId, message: "Table created successfully" })
+    return res.status(200).json({
+      success: true,
+      tableId,
+      // url: urlForTableCode,
+      message: "Table created successfully"
+    })
   } catch (error) {
     return res.status(401).json({ error: true, message: "An error occurred" })
   }
@@ -63,8 +66,6 @@ exports.createTable = async (req, res) => {
 exports.getTable = async (req, res) => {
   const userId = req.headers["userid"]
   const { id } = req.body
-
-  console.log(id)
 
   if (!userId) {
     return res.status(401).json({ error: true, message: "Invalid user" })
@@ -115,6 +116,34 @@ exports.getAllTables = async (req, res) => {
       success: true,
       message: "Tables fetch successfully",
       data: [...tables]
+    })
+  } catch (error) {
+    return res.status(401).json({ error: true, message: "An error occurred" })
+  }
+}
+
+exports.deleteTable = async (req, res) => {
+  const userId = req.headers["userid"]
+  const { id } = req.body
+
+  if (!userId) {
+    return res.status(401).json({ error: true, message: "Invalid user" })
+  }
+
+  if (!id) {
+    return res
+      .status(401)
+      .json({ error: true, message: "Table Id is required" })
+  }
+
+  try {
+    await Table.destroy({
+      where: { userId, id }
+    })
+
+    return res.status(200).json({
+      success: true,
+      message: "Table deleted successfully"
     })
   } catch (error) {
     return res.status(401).json({ error: true, message: "An error occurred" })
