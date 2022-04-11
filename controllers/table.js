@@ -34,7 +34,7 @@ exports.createTable = async (req, res) => {
   }
 
   const tableId = v4()
-  const urlForTableCode = `${process.env.CLIENT_URL}/menu/${userId}?=${tableId}`
+  const urlForTableCode = `${process.env.CLIENT_URL}/menu/${userId}?t=${tableId}`
   const qrcodeBase64 = await generateCode(urlForTableCode)
   const qrcodeImageUrl = await saveQrCodeImage(qrcodeBase64, tableId)
 
@@ -55,7 +55,7 @@ exports.createTable = async (req, res) => {
     return res.status(200).json({
       success: true,
       tableId,
-      // url: urlForTableCode,
+      url: urlForTableCode,
       message: "Table created successfully"
     })
   } catch (error) {

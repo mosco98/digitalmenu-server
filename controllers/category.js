@@ -1,5 +1,6 @@
 const Category = require("../models/Category")
 const sequelize = require("sequelize")
+const Item = require("../models/Item")
 
 exports.createCategory = async (req, res) => {
   const userId = req.headers["userid"]
@@ -40,13 +41,11 @@ exports.createCategory = async (req, res) => {
     })
 
     if (newCategory) {
-      return res
-        .status(200)
-        .json({
-          success: true,
-          categoryId: newCategory.id,
-          message: "Category created successfully"
-        })
+      return res.status(200).json({
+        success: true,
+        categoryId: newCategory.id,
+        message: "Category created successfully"
+      })
     }
   } catch (error) {
     return res.status(401).json({ error: true, message: "An error occurred" })
@@ -129,6 +128,10 @@ exports.deleteCategory = async (req, res) => {
   try {
     await Category.destroy({
       where: { userId, id }
+    })
+
+    await Item.destroy({
+      where: { userId, categoryId: id }
     })
 
     return res.status(200).json({

@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize")
 const db = require("../utils/db")
 
-const Item = db.define("item", {
+const Order = db.define("order", {
   id: {
     allowNull: false,
     type: DataTypes.UUID,
@@ -12,22 +12,18 @@ const Item = db.define("item", {
     type: DataTypes.STRING,
     allowNull: false
   },
-  categoryId: {
+  tableId: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  name: {
+  order_details: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  price: {
-    type: DataTypes.NUMBER,
-    allowNull: false
-  },
-  available: {
+  settled: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
-    defaultValue: true
+    defaultValue: false
   },
   createdAt: {
     allowNull: false,
@@ -39,4 +35,4 @@ const Item = db.define("item", {
   }
 })
 
-module.exports = Item
+module.exports = Order

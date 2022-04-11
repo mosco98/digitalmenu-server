@@ -5,7 +5,7 @@ exports.isAuthenticated = (req, res, next) => {
   const userId = req.headers["userid"]
   const accessToken = authHeader && authHeader.split(" ")[1]
 
-  if (accessToken === null) {
+  if (!userId && !accessToken) {
     return res
       .status(401)
       .json({ error: true, message: "Unauthorized request" })
